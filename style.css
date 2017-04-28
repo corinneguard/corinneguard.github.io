@@ -1,0 +1,73 @@
+    header {
+      text-align: center;
+      background: url('http://circuits-assets.generalassemb.ly/prod/asset/5475/toms-restaurant.jpg');
+      background-size: cover;
+      height: 400px;
+    }
+    body {
+      text-align: center;
+    }
+    h1 {
+      font-size: 70px;
+      text-align: center;
+      font-family: 'Luckiest Guy', cursive;
+      margin: 30px -40px 0px 0px;
+    }
+
+    h2 {
+      text-align: center;
+      font-family: 'PT Sans Caption', sans-serif;      
+    }
+
+    h3 {
+      text-align: center;
+      font-family: 'PT Sans Narrow', sans-serif; 
+      font-size: 32px; 
+    }
+
+    img {
+      margin: -10px 0px 0px 0px;
+      border: .25px solid white;
+      border-radius: 20px;
+    }
+    ul {
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.5);
+    }
+    li {
+      display: inline;
+      padding: 0px 10px 0px 10px;
+    }
+
+    caption {
+      text-align: center;
+      position: top;  
+    }
+
+    p {
+       font-family: 'PT Sans Narrow', sans-serif;  
+       font-size: 20px;
+    }
+    .reservation {
+    -webkit-column-count: 2; /* Chrome, Safari, Opera */
+    -moz-column-count: 2; /* Firefox */
+    column-count: 2;
+    column-gap: 150px;
+    max-width: 500px;
+    padding: 20px;
+    margin: 0 auto;
+    font-family: 'PT Sans Narrow', sans-serif;  
+}
+
+.Reviews {
+    -webkit-column-count: 2; /* Chrome, Safari, Opera */
+    -moz-column-count: 2; /* Firefox */
+    column-count: 2;
+    padding: 20px;
+    margin: 0 auto;
+    text-align: right;
+}
+
+      #map {
+        height: 400px;
+      }
