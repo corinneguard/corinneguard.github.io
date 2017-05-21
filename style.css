@@ -1,0 +1,67 @@
+    header {
+      text-align: center;
+      background: url('');
+      background-size: cover;
+      height: 0px;
+    }
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    h1 {
+      font-size: 20px;
+      text-align: center;
+      font-family: 'PT Sans Narrow', cursive;
+      margin: 30px -40px 0px 0px;
+    }
+
+    h2 {
+      text-align: center;
+      font-family: 'PT Sans Caption', sans-serif;      
+    }
+
+    h3 {
+      text-align: center;
+      font-family: 'PT Sans Narrow', sans-serif; 
+      font-size: 32px; 
+    }
+
+    img {
+      margin: -10px 0px 0px 0px;
+      border: .25px solid white;
+      border-radius: 20px;
+    }
+
+    caption {
+      text-align: center;
+      position: top;  
+    }
+
+    p {
+       font-family: 'PT Sans Caption', sans-serif;  
+       font-size: 12px;
+    }
+    .reservation {
+    -webkit-column-count: 2; /* Chrome, Safari, Opera */
+    -moz-column-count: 2; /* Firefox */
+    column-count: 2;
+    column-gap: 150px;
+    max-width: 500px;
+    padding: 20px;
+    margin: 0 auto;
+    font-family: 'PT Sans Narrow', sans-serif;  
+}
+
+.Reviews {
+    -webkit-column-count: 2; /* Chrome, Safari, Opera */
+    -moz-column-count: 2; /* Firefox */
+    column-count: 2;
+    padding: 20px;
+    margin: 0 auto;
+    text-align: right;
+}
+
+      #map {
+        height: 100%;
+      }
