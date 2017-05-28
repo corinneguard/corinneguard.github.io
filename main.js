@@ -15,69 +15,77 @@
 //user input option could be save or remove - include a button in the waterfall's info box that allows them the option to save to a "saved collection" of waterfalls, wherever that is accessed from. 
 
 //Load a Google Map with the correct starting lat/lng (centered on Western North Carolina, for example)
-      function initMap() {
-      	var myLatLng = {lat:35.2961437628608, lng: -82.7688210636916};
-        var map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: 35.782169, lng: -80.793457},
-          zoom: 7
-        });
-//Plot a sample point - Looking Glass Falls 
-	    var marker = new google.maps.Marker({
-	          position: myLatLng,
-	          map: map,
-	          title: 'Looking Glass Falls'
-	        });
-Create a marker with an info window with the weather pulled in from one of the sources you specified
-        var contentString = '<div id="content">'+
-            '<div id="siteNotice">'+
-            '</div>'+
-            '<h1 id="firstHeading" class="firstHeading">Looking Glass Falls</h1>'+
-            '<div id="bodyContent">'+
-            '<p>This is one of the most popular and photogenic falls in Western NC. ' +
-            'The creek, wide and even, plunges about 45 feet into a big, round plunge pool. ' + 
-            'Tall cliffs tower above the plunge pool on the opposite side from the viewing area.</p>'+
-            '<p><b> Directions: From the intersection of US Hwy. 276/64 and NC Hwy. 280 in Brevard, NC, '+'follow US Hwy. 276 West for 5.6 miles, through the Pisgah National Forest, to the' + 'parking area on the right. There are signs to guide you along the way.</b></p>'+
-            '</div>'+
-            '</div>';
-        var infowindow = new google.maps.InfoWindow({
-          content: contentString
-        });
+function initMap() {
+	var myLatLng = {lat:35.2961437628608, lng: -82.7688210636916};
+  var map = new google.maps.Map(document.getElementById('map'), {
+    center: {lat: 35.782169, lng: -80.793457},
+    zoom: 7
+  });
 
-        marker.addListener('click', function() {
-          infowindow.open(map, marker);
-        });
-      }
+  //Plot a sample point - Looking Glass Falls 
+  var marker = new google.maps.Marker({
+    position: myLatLng,
+    map: map,
+    title: 'Looking Glass Falls'
+  });
+
+  //Create a marker with an info window with the weather pulled in from one of the sources you specified
+  var contentString = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h1 id="firstHeading" class="firstHeading">Looking Glass Falls</h1>'+
+      '<div id="bodyContent">'+
+      '<p>This is one of the most popular and photogenic falls in Western NC. ' +
+      'The creek, wide and even, plunges about 45 feet into a big, round plunge pool. ' + 
+      'Tall cliffs tower above the plunge pool on the opposite side from the viewing area.</p>'+
+      '<p><b> Directions: From the intersection of US Hwy. 276/64 and NC Hwy. 280 in Brevard, NC, '+'follow US Hwy. 276 West for 5.6 miles, through the Pisgah National Forest, to the' + 'parking area on the right. There are signs to guide you along the way.</b></p>'+
+      '</div>'+
+      '</div>';
+
+  var infowindow = new google.maps.InfoWindow({
+    content: contentString
+  });
+
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+}
+
+
+
 //
 //Use the resources you specified to create an object of waterfall locations and conditions
-//function Waterfall (name, lat, lon, height, watershed) {
-  //this.name = name;
-  //this.lat = lat;
-  //this.lon = lon;
-  //this.height = height;
-  //this.watershed = watershed;
-//Map the members of the object onto the Google Map  
-  //this.marker = new google.maps.Marker({
-  //position: {this.lat, this.lon},
-  //map: map,
-  //title: this.name
-//});
+function Waterfall (name, lat, lon, height, watershed) {
+  this.name = name;
+  this.lat = lat;
+  this.lon = lon;
+  this.height = height;
+  this.watershed = watershed;
+  
+  //Map the members of the object onto the Google Map  
+  this.marker = new google.maps.Marker({
+    position: {lat: this.lat, lon: this.lon},
+    map: map,
+    title: this.name
+  });
 //Create the info window added to markers
-        //var contentString = '<div id="content">'+
-           //'//<h1 id="firstHeading" class="firstHeading">' + this.name + '</h1>'+
-            //'<div id="bodyContent">'+
-            //'<p>Height: ' + this.height +
-            //'Watershed size: ' + this.watershed + '</p>'+
-            //'</div>'+
-            //'</div>';
-        //var infowindow = new google.maps.InfoWindow({
-          //content: contentString
-        //});
+  var contentString = '<div id="content">'+
+     '//<h1 id="firstHeading" class="firstHeading">' + this.name + '</h1>'+
+      '<div id="bodyContent">'+
+      '<p>Height: ' + this.height +
+      'Watershed size: ' + this.watershed + '</p>'+
+      '</div>'+
+      '</div>';
+  var infowindow = new google.maps.InfoWindow({
+    content: contentString
+  });
 
-        //this.marker.addListener('click', function() {
-          //infowindow.open(map, marker);
-        //});
+  this.marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
       
-//}
+}
+
 //Populate the info windows from the object
 //var mooreCove = new Waterfall('Moore Cove Falls', 35.31186, -82.77776, '50 ft', 'Very Small');
 //var tripleFalls = new Waterfall('Triple Falls', 35.20028, -82.61756, '100 ft', 'Large');
