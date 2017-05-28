@@ -15,9 +15,12 @@
 //user input option could be save or remove - include a button in the waterfall's info box that allows them the option to save to a "saved collection" of waterfalls, wherever that is accessed from. 
 
 //Load a Google Map with the correct starting lat/lng (centered on Western North Carolina, for example)
+
+var map;
+
 function initMap() {
 	var myLatLng = {lat:35.2961437628608, lng: -82.7688210636916};
-  var map = new google.maps.Map(document.getElementById('map'), {
+  map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: 35.782169, lng: -80.793457},
     zoom: 7
   });
@@ -49,6 +52,11 @@ function initMap() {
   marker.addListener('click', function() {
     infowindow.open(map, marker);
   });
+
+  //Populate the info windows from the object
+  var mooreCove = new Waterfall('Moore Cove Falls', 35.31186, -82.77776, '50 ft', 'Very Small');
+  var tripleFalls = new Waterfall('Triple Falls', 35.20028, -82.61756, '100 ft', 'Large');
+
 }
 
 
@@ -64,7 +72,7 @@ function Waterfall (name, lat, lon, height, watershed) {
   
   //Map the members of the object onto the Google Map  
   this.marker = new google.maps.Marker({
-    position: {lat: this.lat, lon: this.lon},
+    position: {lat: this.lat, lng: this.lon},
     map: map,
     title: this.name
   });
@@ -86,9 +94,6 @@ function Waterfall (name, lat, lon, height, watershed) {
       
 }
 
-//Populate the info windows from the object
-//var mooreCove = new Waterfall('Moore Cove Falls', 35.31186, -82.77776, '50 ft', 'Very Small');
-//var tripleFalls = new Waterfall('Triple Falls', 35.20028, -82.61756, '100 ft', 'Large');
 //ATTEMPT 2 create a waterfall object
 //var locations = [
      //['Moore Cove Falls', 35.31186, -82.77776, '50 ft', 'Very Small', 1],
