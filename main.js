@@ -1,23 +1,6 @@
-//create a map where users can select a map marker of waterfalls in Western North Carolina and find out the condition of the strength of the waterfall based on watershed size + recent rain conditions
-//Use https://www.wncwaterfalls.info/map.html as a reference, pull all GeoJSON data, note private access only
-//crossreference watershed notes from wnc map with http://www.kadamsphoto.com/north_carolina_waterfalls/find-by-map/ to categorize Very Small, Small, Medium  
-
-//use Google Maps API
-//AIzaSyAhJX9J8IPN6RpBq3IZB2yIgiXNDDGt85A
-//pull in Open Weather API or Weather Underground current weather data
-//1e90c8e9996319b9
-//get API key(s) 
-//fill the screen with the Google Map display and markers
-//find a way to batch load all accessible waterfalls' lat/long markers in
-//create array of name, longitude, latitude, watershed, open or closed trails and other trail warnings, other info box categories with selected info from the sites
-//when user loads the page, pull in markers and weather data and modify markers based on watershed levels and weather conditions
-//when user clicks on a marker, load an info tab which shows array data stored for that specific waterfall
-//user input option could be save or remove - include a button in the waterfall's info box that allows them the option to save to a "saved collection" of waterfalls, wherever that is accessed from. 
-
-//Load a Google Map with the correct starting lat/lng (centered on Western North Carolina, for example)
-
 var map;
 
+//Load a Google Map with the correct starting lat/lng (centered on Western North Carolina, for example)
 function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: 35.782169, lng: -80.793457},
@@ -151,6 +134,7 @@ function initMap() {
   var hiddenFalls = new Waterfall('Hidden Falls', 36.399029, -80.26033, '12 ft', 'Very Small');
   var windowFalls = new Waterfall('Window Falls', 36.40097, -80.259499, '27 ft', 'Very Small');
   var toryFalls = new Waterfall('Tory Falls', 36.401182, -80.297914, '50 ft', 'Very Small');
+
 }
 
 //Use the resources you specified to create an object of waterfall locations and conditions
@@ -160,7 +144,25 @@ function Waterfall (name, lat, lon, height, watershed) {
   this.lon = lon;
   this.height = height;
   this.watershed = watershed;
-  
+	
+	var icon;
+	var iconBase = 'https://corinneguard.github.io/img/';
+	var icons = {
+	  green: {
+	    icon: iconBase + 'green.png'
+	  },
+	  yellow: {
+	    icon: iconBase + 'yellow.png'
+	  },
+	  orange: {
+	    icon: iconBase + 'orange.png'
+	  },
+	  red: {
+	    icon: iconBase + 'red.png'
+	  }
+	};
+//Pull the weather conditions 
+  var api = 'http://api.openweathermap.org/data/2.5/weather?lat='+ this.lat +'&lon='+ this.lon +'&APPID=a2a5000e2c6b93d226cccface5e68719';
   //Map the members of the object onto the Google Map  
   this.marker = new google.maps.Marker({
     position: {lat: this.lat, lng: this.lon},
@@ -181,30 +183,24 @@ function Waterfall (name, lat, lon, height, watershed) {
   marker.addListener('click', function() {
     infowindow.open(map, marker);
   });
+//Return the weather conditions and run a function to modify custom markers based on weather condition
+  $.get(api, function(response) {
+  	console.log(response);
+    });
 
-	//Pull the weather conditions 
-	function conditions() {
-	//var api = 'http://api.wunderground.com/api/1e90c8e9996319b9/geolookup/q/35.2961437628608,-82.7688210636916.json';
-		var api = 'http://api.openweathermap.org/data/2.5/weather?lat={'+ lat +'}&lon={'+ lon +'}';
-		//Return the weather conditions and run a function to modify custom markers based on weather condition
-		$.get(api, function(response) {
-		  if (watershed === 'Very Small' && "rain" === 0) {
-		    icon = 'red';
-		  } else if (
-		    watershed === 'Very Small' && "rain" < .1  ||
-		    watershed === 'Small' && "rain" === 0
-		  ) {
-		    icon = 'orange';
-		  } else if (
-		    watershed === 'Small' && "rain" < .1  ||
-		    watershed === 'Medium' && "rain" === 0
-		  ) {
-		    icon = 'yellow';
-		  } else {
-		    icon = 'green';
-		  }
-		  return icon;
-		  });
-	}
-
+    if (this.watershed === 'Very Small' && "rain.3h" === 0) {
+      icon = 'red';
+      } else if (this.watershed === 'Very Small' && "rain.3h" < .1  ||
+      this.watershed === 'Small' && "rain.3h" === 0) {
+      icon = 'orange';
+      } else if (
+      this.watershed === 'Small' && "rain.3h" < .1  ||
+      this.watershed === 'Medium' && "rain.3h" === 0
+      ) {
+      icon = 'yellow';
+      } else {
+      icon = 'green';
+      }
+    };
+      return value;
 }
