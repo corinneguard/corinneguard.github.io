@@ -6,7 +6,22 @@ function initMap() {
     center: {lat: 35.782169, lng: -80.793457},
     zoom: 7
   });
-
+	var icon;
+	var iconBase = 'https://corinneguard.github.io/img/';
+	var icons = {
+	  green: {
+	    icon: iconBase + 'green.png'
+	  },
+	  yellow: {
+	    icon: iconBase + 'yellow.png'
+	  },
+	  orange: {
+	    icon: iconBase + 'orange.png'
+	  },
+	  red: {
+	    icon: iconBase + 'red.png'
+	  }
+	};
   //Populate markers and the info windows from the Waterfall object
   var mooreCove = new Waterfall('Moore Cove Falls', 35.31186, -82.77776, '50 ft', 'Very Small');
   var tripleFalls = new Waterfall('Triple Falls', 35.20028, -82.61756, '100 ft', 'Large');
@@ -145,22 +160,6 @@ function Waterfall (name, lat, lon, height, watershed) {
   this.height = height;
   this.watershed = watershed;
 	
-	var icon;
-	var iconBase = 'https://corinneguard.github.io/img/';
-	var icons = {
-	  green: {
-	    icon: iconBase + 'green.png'
-	  },
-	  yellow: {
-	    icon: iconBase + 'yellow.png'
-	  },
-	  orange: {
-	    icon: iconBase + 'orange.png'
-	  },
-	  red: {
-	    icon: iconBase + 'red.png'
-	  }
-	};
 //Pull the weather conditions 
   var api = 'http://api.openweathermap.org/data/2.5/weather?lat='+ this.lat +'&lon='+ this.lon +'&APPID=a2a5000e2c6b93d226cccface5e68719';
   //Map the members of the object onto the Google Map  
@@ -177,6 +176,7 @@ function Waterfall (name, lat, lon, height, watershed) {
   //Set info window for each marker
   var marker = new google.maps.Marker({
     position: {lat: this.lat, lng: this.lon},
+    icon: [initMap.icons].icon,
     map: map,
     title: this.name
   });
@@ -185,10 +185,7 @@ function Waterfall (name, lat, lon, height, watershed) {
   });
 //Return the weather conditions and run a function to modify custom markers based on weather condition
   $.get(api, function(response) {
-  	console.log(response);
-    });
-
-    if (this.watershed === 'Very Small' && "rain.3h" === 0) {
+     if (this.watershed === 'Very Small' && "rain.3h" === 0) {
       icon = 'red';
       } else if (this.watershed === 'Very Small' && "rain.3h" < .1  ||
       this.watershed === 'Small' && "rain.3h" === 0) {
@@ -201,6 +198,7 @@ function Waterfall (name, lat, lon, height, watershed) {
       } else {
       icon = 'green';
       }
-    };
-      return value;
+  	console.log(response);
+    });
+    
 }
