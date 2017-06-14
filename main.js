@@ -1,27 +1,28 @@
-var map;
-
+var map,
+    icon,
+    infowindows = [];
+  var iconBase = 'https://corinneguard.github.io/img/';
+  var icons = {
+    green: {
+      icon: iconBase + 'green.png'
+    },
+    yellow: {
+      icon: iconBase + 'yellow.png'
+    },
+    orange: {
+      icon: iconBase + 'orange.png'
+    },
+    red: {
+      icon: iconBase + 'red.png'
+    }
+  };
 //Load a Google Map with the correct starting lat/lng (centered on Western North Carolina, for example)
 function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: 35.782169, lng: -80.793457},
     zoom: 7
   });
-	var icon;
-	var iconBase = 'https://corinneguard.github.io/img/';
-	var icons = {
-	  green: {
-	    icon: iconBase + 'green.png'
-	  },
-	  yellow: {
-	    icon: iconBase + 'yellow.png'
-	  },
-	  orange: {
-	    icon: iconBase + 'orange.png'
-	  },
-	  red: {
-	    icon: iconBase + 'red.png'
-	  }
-	};
+	
   //Populate markers and the info windows from the Waterfall object
   var mooreCove = new Waterfall('Moore Cove Falls', 35.31186, -82.77776, '50 ft', 'Very Small');
   var tripleFalls = new Waterfall('Triple Falls', 35.20028, -82.61756, '100 ft', 'Large');
@@ -161,44 +162,55 @@ function Waterfall (name, lat, lon, height, watershed) {
   this.watershed = watershed;
 	
 //Pull the weather conditions 
-  var api = 'http://api.openweathermap.org/data/2.5/weather?lat='+ this.lat +'&lon='+ this.lon +'&APPID=a2a5000e2c6b93d226cccface5e68719';
+  var api = 'https://circuits-api.generalassemb.ly/8737fcf3-6a39-4548-a324-209d535e59fd?q=lat='+ this.lat +'&lon='+ this.lon +'&APPID=a2a5000e2c6b93d226cccface5e68719';
   //Map the members of the object onto the Google Map  
-  this.marker = new google.maps.Marker({
-    position: {lat: this.lat, lng: this.lon},
-    map: map,
-    title: this.name
-  });
+  
   //Define info window content
   var contentString = '<h1>' + this.name + ': ' + this.height + '</h1>'
-  var infowindow = new google.maps.InfoWindow({
-    content: contentString
-  });
+  
   //Set info window for each marker
-  var marker = new google.maps.Marker({
-    position: {lat: this.lat, lng: this.lon},
-    icon: [initMap.icons].icon,
-    map: map,
-    title: this.name
-  });
-  marker.addListener('click', function() {
-    infowindow.open(map, marker);
-  });
+  
 //Return the weather conditions and run a function to modify custom markers based on weather condition
   $.get(api, function(response) {
-     if (this.watershed === 'Very Small' && "rain.3h" === 0) {
+
+    if (response.rain == undefined) {
+      response['rain'] = {'3h':0};
+    }
+    if (watershed === 'Very Small' && response.rain['3h'] === 0) {
       icon = 'red';
-      } else if (this.watershed === 'Very Small' && "rain.3h" < .1  ||
-      this.watershed === 'Small' && "rain.3h" === 0) {
+    } else if (watershed === 'Very Small' && response.rain['3h'] < .1  ||
+      watershed === 'Small' && response.rain['3h'] === 0) {
       icon = 'orange';
-      } else if (
-      this.watershed === 'Small' && "rain.3h" < .1  ||
-      this.watershed === 'Medium' && "rain.3h" === 0
+
+    } else if (
+      watershed === 'Small' && response.rain['3h'] < .1  ||
+      watershed === 'Medium' && response.rain['3h'] === 0
       ) {
       icon = 'yellow';
-      } else {
+
+    } else {
       icon = 'green';
-      }
-  	console.log(response);
+
+    }
+
+    var marker = new google.maps.Marker({
+      position: {lat: lat, lng: lon},
+      icon: icons[icon].icon,
+      map: map,
+      title: name
     });
+
+    var infowindow = new google.maps.InfoWindow({
+      content: contentString + "Current weather: " + response.weather[0].description
+    });
+    infowindows.push(infowindow);
+    marker.addListener('click', function() {
+      for (var i = 0; i < infowindows.length - 1; i++) {
+        infowindows[i].close();
+      }
+      infowindow.open(map, marker);
+    });
+
+  });
     
 }
